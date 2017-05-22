@@ -31,11 +31,14 @@ Odx.WebAPI = Odx.WebAPI || {};
         req.send();
     };
 
-    this.retrieveMultiple = function (queryString, successCallback, errorCallback) {
+    this.retrieveMultiple = function (queryString, maxpagesize, successCallback, errorCallback) {
+        if(!maxpagesize){
+            maxpagesize = 5000;
+        }
         var req = new XMLHttpRequest();
         req.open("GET", encodeURI(getWebAPIPath() + queryString), false);
         setStandardHeaders(req);
-        req.setRequestHeader("Prefer", "odata.include-annotations=\"*\",odata.maxpagesize=1");
+        req.setRequestHeader("Prefer", "odata.include-annotations=\"*\",odata.maxpagesize=" + maxpagesize);
         req.onreadystatechange = function () {
             if (this.readyState === 4) {
                 req.onreadystatechange = null;
@@ -54,11 +57,14 @@ Odx.WebAPI = Odx.WebAPI || {};
         req.send();
     };
 
-    this.retrieveMultipleAsync = function(queryString, successCallback, errorCallback){
+    this.retrieveMultipleAsync = function(queryString, maxpagesize, successCallback, errorCallback){
+        if(!maxpagesize){
+            maxpagesize = 5000;
+        }
         var req = new XMLHttpRequest();
         req.open("GET", encodeURI(getWebAPIPath() + queryString), true);
         setStandardHeaders(req);
-        req.setRequestHeader("Prefer", "odata.include-annotations=\"*\",odata.maxpagesize=1");
+        req.setRequestHeader("Prefer", "odata.include-annotations=\"*\",odata.maxpagesize=" + maxpagesize);
         req.onreadystatechange = function() {
             if (this.readyState === 4) {
                 req.onreadystatechange = null;
