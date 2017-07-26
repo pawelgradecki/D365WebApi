@@ -190,6 +190,9 @@ Odx.WebAPI = Odx.WebAPI || {};
             async: async,
             payload: entityData,
             parseResponseAsJson: false,
+            successMessagePredicate: function (xhr) {
+                return xhr.status === 204
+            },
             successCallback: successCallback,
             errorCallback: errorCallback
         });
@@ -368,12 +371,16 @@ Odx.WebAPI = Odx.WebAPI || {};
     }
 
     function extend() {
+        if (arguments[0] == null) {
+            arguments[0] = {};
+        }
+
         for (var i = 1; i < arguments.length; i++) {
             for (var key in arguments[i]) {
                 if (arguments[i].hasOwnProperty(key)) {
                     if (typeof arguments[0][key] === 'object'
                         && typeof arguments[i][key] === 'object') {
-                        extend(arguments[0][key], arguments[i][key]);
+                        arguments[0][key] = extend(arguments[0][key], arguments[i][key]);
                     }
                     else {
                         arguments[0][key] = arguments[i][key];
